@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
  * CarController
  */
 @RestController
-public class CarController {
+public class CarController implements CarControllerApi {
 
     @Autowired
     private CarService service;
 
-    @GetMapping("/cars")
     public List<Car> getCars()
     {
         return service.getAllCars();

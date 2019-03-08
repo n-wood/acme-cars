@@ -1,0 +1,300 @@
+swagger: '2.0'
+info:
+description: Available functions for external applications
+version: 1.0.0
+title: Greenhouse Functions API
+contact: {}
+license:
+url: http://unlicense.org
+host: localhost:8080
+basePath: "/"
+tags:
+- name: humidity-api-controller
+description: the humidity API
+- name: light-api-controller
+description: the light API
+- name: room-api-controller
+description: the room API
+- name: temperature-api-controller
+description: the temperature API
+- name: window-api-controller
+description: the window API
+paths:
+"/humidity":
+post:
+tags:
+- humidity-api-controller
+summary: Sets the required humidity for the room
+operationId: updateHumidity
+consumes:
+- application/json
+produces:
+- "*/*"
+parameters:
+- name: humidity
+in: query
+description: The humidity to set for the room. A value between 0 and 100
+required: false
+type: integer
+format: int32
+allowEmptyValue: false
+responses:
+'200':
+description: Success
+'201':
+description: Created
+'400':
+description: Bad request
+'401':
+description: Unauthorized
+'403':
+description: Forbidden
+'404':
+description: Not Found
+'405':
+description: Invalid input
+'500':
+description: Internal server error
+'503':
+description: Service unavailable
+deprecated: false
+"/light/{id}/{level}":
+post:
+tags:
+- light-api-controller
+summary: Sets the required light level for the light device identified by {id}
+operationId: setLightLevel
+consumes:
+- application/json
+produces:
+- "*/*"
+parameters:
+- name: id
+in: path
+description: The identity of the light device
+required: true
+type: integer
+format: int32
+- name: level
+in: path
+description: The light level to set
+required: true
+type: integer
+format: int32
+responses:
+'200':
+description: Success
+'201':
+description: Created
+'400':
+description: Bad request
+'401':
+description: Unauthorized
+'403':
+description: Forbidden
+'404':
+description: Not Found
+'405':
+description: Invalid input
+'500':
+description: Internal server error
+'503':
+description: Service unavailable
+deprecated: false
+"/room/humidity":
+get:
+tags:
+- room-api-controller
+summary: Returns the last recorded humidity percentage of the room.
+operationId: roomHumidity
+produces:
+- application/json
+responses:
+'200':
+description: Information of the room's humidity
+schema:
+type: object
+'400':
+description: Invalid status value
+'401':
+description: Unauthorized
+'403':
+description: Forbidden
+'404':
+description: Not Found
+deprecated: false
+"/room/light":
+get:
+tags:
+- room-api-controller
+summary: Returns the last recorded light in the room.
+operationId: roomLight
+produces:
+- application/json
+responses:
+'200':
+description: Information of the light lumens in the room.
+schema:
+type: object
+'400':
+description: Invalid status value
+'401':
+description: Unauthorized
+'403':
+description: Forbidden
+'404':
+description: Not Found
+deprecated: false
+"/room/setup":
+post:
+tags:
+- room-api-controller
+summary: Updates the greenhouse room with new data
+operationId: updateRoom
+consumes:
+- application/json
+produces:
+- "*/*"
+parameters:
+- in: body
+name: body
+description: room object
+required: true
+schema:
+"$ref": "#/definitions/RoomObject"
+responses:
+'200':
+description: OK
+'201':
+description: Created
+'401':
+description: Unauthorized
+'403':
+description: Forbidden
+'404':
+description: Not Found
+'405':
+description: Invalid input
+'500':
+description: Internal server error
+'503':
+description: Service unavailable
+deprecated: false
+"/room/temperature":
+get:
+tags:
+- room-api-controller
+summary: Returns the last recorded room temperature.
+operationId: roomTemperature
+produces:
+- application/json
+responses:
+'200':
+description: Temperature of the room.
+schema:
+type: object
+'400':
+description: Invalid status value
+'401':
+description: Unauthorized
+'403':
+description: Forbidden
+'404':
+description: Not Found
+deprecated: false
+"/temperature":
+post:
+tags:
+- temperature-api-controller
+summary: Sets the required temperature for the room
+operationId: updateTemperature
+consumes:
+- application/json
+produces:
+- "*/*"
+parameters:
+- name: temp
+in: query
+description: The temperature to set in the room, in celcius.
+required: false
+type: integer
+format: int32
+allowEmptyValue: false
+responses:
+'200':
+description: Success
+'201':
+description: Created
+'400':
+description: Bad request
+'401':
+description: Unauthorized
+'403':
+description: Forbidden
+'404':
+description: Not Found
+'405':
+description: Invalid input
+'500':
+description: Internal server error
+'503':
+description: Service unavailable
+deprecated: false
+"/window/{id}/{state}":
+post:
+tags:
+- window-api-controller
+summary: Sets the required light level for the light device identified by {id}
+operationId: setWindowState
+consumes:
+- application/json
+produces:
+- "*/*"
+parameters:
+- name: id
+in: path
+description: A value identifying the window
+required: true
+type: integer
+format: int32
+- name: state
+in: path
+description: The humidity to set for the room. Possible parameter values are
+'open or 'closed'
+required: true
+type: string
+responses:
+'200':
+description: Success
+'201':
+description: Created
+'400':
+description: Bad request
+'401':
+description: Unauthorized
+'403':
+description: Forbidden
+'404':
+description: Not Found
+'405':
+description: Invalid input
+'500':
+description: Internal server error
+'503':
+description: Service unavailable
+deprecated: false
+definitions:
+RoomObject:
+type: object
+properties:
+humidity:
+type: string
+description: Updated humidity of the room
+light:
+type: string
+description: Updated light of the room
+temperature:
+type: number
+description: Updated temperature of the room
+title: RoomObject
+description: room object
