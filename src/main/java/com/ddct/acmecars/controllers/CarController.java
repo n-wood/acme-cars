@@ -2,6 +2,8 @@ package com.ddct.acmecars.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.ddct.acmecars.models.Car;
 import com.ddct.acmecars.services.CarService;
 
@@ -28,7 +30,7 @@ public class CarController {
     }
 
     @PostMapping("/cars")
-    public Car saveCar(@RequestBody Car car)
+    public Car saveCar( @Valid @RequestBody Car car)
     {
         return service.saveCar(car);
     }

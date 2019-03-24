@@ -1,5 +1,7 @@
 package com.ddct.acmecars.models;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 
 /**
@@ -14,6 +16,7 @@ public class Car {
     /**
      * @return the make
      */
+    @NotNull( message = "The make of the car must be defined" )
     public String getMake() {
         return make;
     }
@@ -21,6 +24,7 @@ public class Car {
     /**
      * @return the model
      */
+    @NotNull( message = "The model of the car must be defined" )
     public String getModel() {
         return model;
     }
