@@ -1,10 +1,10 @@
 package com.ddct.acmecars.controllers;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +17,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.ddct.acmecars.models.Car;
 import com.ddct.acmecars.repos.CarRepo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(SpringRunner.class)
@@ -41,9 +47,11 @@ public class CarControllerTest
 		
 		ResultActions resultActions = mvc.perform( MockMvcRequestBuilders.post( "/cars" )
 				                                   .contentType( MediaType.APPLICATION_JSON )
-				                                   .content( SUCCESSFUL_INPUT ) );
+				                                   .content( getCarsDtoJson() ) );
 		
 		resultActions.andExpect( status().isOk() );
+
+		//verify(carRepo, Mockito.times(1)).save(eq(getCar()));
 	}
 	
 	private Car getCar()
@@ -54,6 +62,14 @@ public class CarControllerTest
 		car.setModel( "Focus" );
 		
 		return car;
+	}
+
+	private String getCarsDtoJson() throws Exception {
+		CarsDto carsDto = new CarsDto(
+			Arrays.asList(
+				new Car(null, "Ford", "Focus")
+			));
+		return new ObjectMapper().writeValueAsString(carsDto);
 	}
 
 }

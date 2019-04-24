@@ -1,6 +1,7 @@
 package com.ddct.acmecars.services;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import com.ddct.acmecars.models.Car;
 
@@ -10,10 +11,16 @@ import com.ddct.acmecars.models.Car;
 
 public interface CarService {
 
-    public List<Car> getAllCars();
+    List<Car> getAllCars();
 
-    public Car saveCar(Car car);
+    CompletableFuture<List<Car>> getAllCarsAsync();
 
-    public List<Car> getSpecificCar(String make);
-    
+    Car saveCar(Car car);
+
+    List<Car> getSpecificCar(String make);
+
+    List<Car> saveCars(List<Car> cars);
+
+    CompletableFuture<List<Car>> saveCarsAsync(List<Car> cars);
+
 }
