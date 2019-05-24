@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * CarController
  */
 @RestController
+@Slf4j
 public class CarController {
 
     @Autowired
@@ -26,13 +29,14 @@ public class CarController {
     @GetMapping("/cars")
     public List<Car> getCars()
     {
+        log.info("getCars - entered");
         return service.getAllCars();
     }
 
     @PostMapping("/cars")
-    public Car saveCar( @Valid @RequestBody Car car)
+    public List<Car> saveCar( @Valid @RequestBody CarsDto cars)
     {
-        return service.saveCar(car);
+        return service.saveCars(cars.getCars());
     }
 
     @GetMapping("/cars/makes/{make}")
