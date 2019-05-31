@@ -1,10 +1,10 @@
 package com.ddct.acmecars.controllers;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.UUID;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,10 +16,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.ddct.acmecars.models.Car;
+import com.ddct.acmecars.models.Engine;
+import com.ddct.acmecars.models.EngineType;
 import com.ddct.acmecars.repos.CarRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,10 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CarControllerTest
 {
-	private static final String SUCCESSFUL_INPUT = "{" +
-                                                         "\"make\" : \"Ford\"," +
-                                                         "\"model\" : \"Focus\"" +
-                                                    "}";
 	@Autowired
 	private MockMvc mvc;
 	
@@ -51,25 +50,33 @@ public class CarControllerTest
 		
 		resultActions.andExpect( status().isOk() );
 
-		//verify(carRepo, Mockito.times(1)).save(eq(getCar()));
+		verify(carRepo, times(1)).save(eq(getCar()));
 	}
 	
 	private Car getCar()
 	{
-		Car car = new Car();
-		
-		car.setMake( "Ford" );
-		car.setModel( "Focus" );
-		
-		return car;
+		return
+			new Car(
+				UUID.randomUUID().toString(),
+				"Tesla",
+				"3",
+				getElectricEngine()
+			);
 	}
 
 	private String getCarsDtoJson() throws Exception {
 		CarsDto carsDto = new CarsDto(
-			Arrays.asList(
-				new Car(null, "Ford", "Focus")
+			Collections.singletonList(
+				new Car(null, "Tesla", "3", getElectricEngine())
 			));
 		return new ObjectMapper().writeValueAsString(carsDto);
+	}
+
+	private Engine getElectricEngine() {
+		return new Engine(
+			EngineType.ELECTRIC.name(),
+			0
+		);
 	}
 
 }

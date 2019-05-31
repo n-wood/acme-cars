@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.ddct.acmecars.models.Car;
+import com.ddct.acmecars.models.Engine;
+import com.ddct.acmecars.models.EngineType;
 import com.ddct.acmecars.repos.CarRepo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,10 +81,10 @@ public class CarAsyncControllerTest
 	private CarsDto getCarsDto() {
 		return new CarsDto(
 			Arrays.asList(
-				new Car(null, "Ford", "Focus"),
-				new Car(null, "BMW", "X5"),
-				new Car(null, "Audi", "A4"),
-				new Car(null, "Audi", "A6")
+				new Car(null, "Ford", "Focus", getPetrolEngine(1600)),
+				new Car(null, "BMW", "X5", getPetrolEngine(2000)),
+				new Car(null, "Audi", "A4", getPetrolEngine(2000)),
+				new Car(null, "Audi", "A6", getPetrolEngine(3000))
 			));
 	}
 
@@ -90,4 +92,10 @@ public class CarAsyncControllerTest
 		return objectMapper.writeValueAsString(obj);
 	}
 
+	private Engine getPetrolEngine(Integer capacity) {
+		return new Engine(
+			EngineType.PETROL.name(),
+			capacity
+		);
+	}
 }
