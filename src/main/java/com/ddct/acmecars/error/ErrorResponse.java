@@ -1,16 +1,15 @@
 package com.ddct.acmecars.error;
 
-public class ErrorResponse
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+class ErrorResponse
 {
-    private String errMsg;
-    
-    public ErrorResponse( String errMsg )
-    {
-    	this.errMsg = errMsg;
-    }
-    
-    public String getErrMsg()
-    {
-    	return this.errMsg;
-    }
+    private String message;
+    private String details;
+
 }
